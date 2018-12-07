@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.dao.ProductMapper">
+	<resultMap id="BaseResultMap" type="com.neuedu.pojo.Product">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="brand_id" jdbcType="INTEGER" property="brandId" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="sales" jdbcType="INTEGER" property="sales" />
+		<result column="price" jdbcType="DECIMAL" property="price" />
+		<result column="sort" jdbcType="INTEGER" property="sort" />
+		<result column="is_del" jdbcType="INTEGER" property="isDel" />
+		<result column="is_hot" jdbcType="INTEGER" property="isHot" />
+		<result column="is_new" jdbcType="INTEGER" property="isNew" />
+		<result column="is_commend" jdbcType="INTEGER"
+			property="isCommend" />
+		<result column="is_show" jdbcType="INTEGER" property="isShow" />
+	</resultMap>
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+		type="com.neuedu.pojo.ProductWithBLOBs">
+		<result column="color_list" jdbcType="LONGVARCHAR"
+			property="colorList" />
+		<result column="images" jdbcType="LONGVARCHAR"
+			property="images" />
+		<result column="description" jdbcType="LONGVARCHAR"
+			property="description" />
+		<result column="storage_list" jdbcType="LONGVARCHAR"
+			property="storageList" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value"
+										item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value"
+										item="listItem" open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, brand_id, name, sales, price, sort, is_del, is_hot, is_new,
+		is_commend, is_show
+	</sql>
+	<sql id="Blob_Column_List">
+		color_list, images, description, storage_list
+	</sql>
+	<select id="selectByExampleWithBLOBs"
+		parameterType="com.neuedu.pojo.ProductExample"
+		resultMap="ResultMapWithBLOBs">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from product
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByExample"
+		parameterType="com.neuedu.pojo.ProductExample"
+		resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from product
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from product
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from product
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample"
+		parameterType="com.neuedu.pojo.ProductExample">
+		delete from product
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert"
+		parameterType="com.neuedu.pojo.ProductWithBLOBs">
+		insert into product (id, brand_id, name,
+		sales, price, sort,
+		is_del, is_hot, is_new,
+		is_commend, is_show, color_list,
+		images, description, storage_list
+		)
+		values (#{id,jdbcType=INTEGER}, #{brandId,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{sales,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{sort,jdbcType=INTEGER},
+		#{isDel,jdbcType=INTEGER}, #{isHot,jdbcType=INTEGER},
+		#{isNew,jdbcType=INTEGER},
+		#{isCommend,jdbcType=INTEGER}, #{isShow,jdbcType=INTEGER}, #{colorList,jdbcType=LONGVARCHAR},
+		#{images,jdbcType=LONGVARCHAR}, #{description,jdbcType=LONGVARCHAR},
+		#{storageList,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.neuedu.pojo.ProductWithBLOBs"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into product
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="brandId != null">
+				brand_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="sales != null">
+				sales,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="sort != null">
+				sort,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+			<if test="isHot != null">
+				is_hot,
+			</if>
+			<if test="isNew != null">
+				is_new,
+			</if>
+			<if test="isCommend != null">
+				is_commend,
+			</if>
+			<if test="isShow != null">
+				is_show,
+			</if>
+			<if test="colorList != null">
+				color_list,
+			</if>
+			<if test="images != null">
+				images,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="storageList != null">
+				storage_list,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="brandId != null">
+				#{brandId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="sales != null">
+				#{sales,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=INTEGER},
+			</if>
+			<if test="isDel != null">
+				#{isDel,jdbcType=INTEGER},
+			</if>
+			<if test="isHot != null">
+				#{isHot,jdbcType=INTEGER},
+			</if>
+			<if test="isNew != null">
+				#{isNew,jdbcType=INTEGER},
+			</if>
+			<if test="isCommend != null">
+				#{isCommend,jdbcType=INTEGER},
+			</if>
+			<if test="isShow != null">
+				#{isShow,jdbcType=INTEGER},
+			</if>
+			<if test="colorList != null">
+				#{colorList,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="images != null">
+				#{images,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="storageList != null">
+				#{storageList,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample"
+		parameterType="com.neuedu.pojo.ProductExample"
+		resultType="java.lang.Long">
+		select count(*) from product
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update product
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.brandId != null">
+				brand_id = #{record.brandId,jdbcType=INTEGER},
+			</if>
+			<if test="record.name != null">
+				name = #{record.name,jdbcType=VARCHAR},
+			</if>
+			<if test="record.sales != null">
+				sales = #{record.sales,jdbcType=INTEGER},
+			</if>
+			<if test="record.price != null">
+				price = #{record.price,jdbcType=DECIMAL},
+			</if>
+			<if test="record.sort != null">
+				sort = #{record.sort,jdbcType=INTEGER},
+			</if>
+			<if test="record.isDel != null">
+				is_del = #{record.isDel,jdbcType=INTEGER},
+			</if>
+			<if test="record.isHot != null">
+				is_hot = #{record.isHot,jdbcType=INTEGER},
+			</if>
+			<if test="record.isNew != null">
+				is_new = #{record.isNew,jdbcType=INTEGER},
+			</if>
+			<if test="record.isCommend != null">
+				is_commend = #{record.isCommend,jdbcType=INTEGER},
+			</if>
+			<if test="record.isShow != null">
+				is_show = #{record.isShow,jdbcType=INTEGER},
+			</if>
+			<if test="record.colorList != null">
+				color_list = #{record.colorList,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="record.images != null">
+				images = #{record.images,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="record.description != null">
+				description = #{record.description,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="record.storageList != null">
+				storage_list = #{record.storageList,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExampleWithBLOBs" parameterType="map">
+		update product
+		set id = #{record.id,jdbcType=INTEGER},
+		brand_id = #{record.brandId,jdbcType=INTEGER},
+		name = #{record.name,jdbcType=VARCHAR},
+		sales = #{record.sales,jdbcType=INTEGER},
+		price = #{record.price,jdbcType=DECIMAL},
+		sort = #{record.sort,jdbcType=INTEGER},
+		is_del = #{record.isDel,jdbcType=INTEGER},
+		is_hot = #{record.isHot,jdbcType=INTEGER},
+		is_new = #{record.isNew,jdbcType=INTEGER},
+		is_commend = #{record.isCommend,jdbcType=INTEGER},
+		is_show = #{record.isShow,jdbcType=INTEGER},
+		color_list = #{record.colorList,jdbcType=LONGVARCHAR},
+		images = #{record.images,jdbcType=LONGVARCHAR},
+		description = #{record.description,jdbcType=LONGVARCHAR},
+		storage_list = #{record.storageList,jdbcType=LONGVARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update product
+		set id = #{record.id,jdbcType=INTEGER},
+		brand_id = #{record.brandId,jdbcType=INTEGER},
+		name = #{record.name,jdbcType=VARCHAR},
+		sales = #{record.sales,jdbcType=INTEGER},
+		price = #{record.price,jdbcType=DECIMAL},
+		sort = #{record.sort,jdbcType=INTEGER},
+		is_del = #{record.isDel,jdbcType=INTEGER},
+		is_hot = #{record.isHot,jdbcType=INTEGER},
+		is_new = #{record.isNew,jdbcType=INTEGER},
+		is_commend = #{record.isCommend,jdbcType=INTEGER},
+		is_show = #{record.isShow,jdbcType=INTEGER}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.neuedu.pojo.ProductWithBLOBs">
+		update product
+		<set>
+			<if test="brandId != null">
+				brand_id = #{brandId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="sales != null">
+				sales = #{sales,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=INTEGER},
+			</if>
+			<if test="isDel != null">
+				is_del = #{isDel,jdbcType=INTEGER},
+			</if>
+			<if test="isHot != null">
+				is_hot = #{isHot,jdbcType=INTEGER},
+			</if>
+			<if test="isNew != null">
+				is_new = #{isNew,jdbcType=INTEGER},
+			</if>
+			<if test="isCommend != null">
+				is_commend = #{isCommend,jdbcType=INTEGER},
+			</if>
+			<if test="isShow != null">
+				is_show = #{isShow,jdbcType=INTEGER},
+			</if>
+			<if test="colorList != null">
+				color_list = #{colorList,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="images != null">
+				images = #{images,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="storageList != null">
+				storage_list = #{storageList,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs"
+		parameterType="com.neuedu.pojo.ProductWithBLOBs">
+		update product
+		set brand_id = #{brandId,jdbcType=INTEGER},
+		name = #{name,jdbcType=VARCHAR},
+		sales = #{sales,jdbcType=INTEGER},
+		price = #{price,jdbcType=DECIMAL},
+		sort = #{sort,jdbcType=INTEGER},
+		is_del = #{isDel,jdbcType=INTEGER},
+		is_hot = #{isHot,jdbcType=INTEGER},
+		is_new = #{isNew,jdbcType=INTEGER},
+		is_commend = #{isCommend,jdbcType=INTEGER},
+		is_show = #{isShow,jdbcType=INTEGER},
+		color_list = #{colorList,jdbcType=LONGVARCHAR},
+		images = #{images,jdbcType=LONGVARCHAR},
+		description = #{description,jdbcType=LONGVARCHAR},
+		storage_list = #{storageList,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.neuedu.pojo.Product">
+		update product
+		set brand_id = #{brandId,jdbcType=INTEGER},
+		name = #{name,jdbcType=VARCHAR},
+		sales = #{sales,jdbcType=INTEGER},
+		price = #{price,jdbcType=DECIMAL},
+		sort = #{sort,jdbcType=INTEGER},
+		is_del = #{isDel,jdbcType=INTEGER},
+		is_hot = #{isHot,jdbcType=INTEGER},
+		is_new = #{isNew,jdbcType=INTEGER},
+		is_commend = #{isCommend,jdbcType=INTEGER},
+		is_show = #{isShow,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="search" resultMap="ResultMapWithBLOBs"
+		parameterType="productQuery">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from product
+		<where>
+        <if test="brandId!=0">
+        and brand_id=#{brandId}
+        </if>
+        <if test="colorId!=0">
+        and id in (select distinct product_id from sku where color_id=#{colorId})
+        </if>
+        <if test="storageId!=0">
+        and id in (select distinct product_id from sku where storage_id=#{storageId})
+        </if>
+        and is_show=1 and is_del=1
+		</where>
+	</select>
+</mapper>
